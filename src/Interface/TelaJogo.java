@@ -11,11 +11,6 @@ import javax.swing.JComponent;
 
 public class TelaJogo extends JComponent {
 
-    public final Color verdeMaisClaro = new Color(0x9a9e3f);
-    public final Color verdeClaro = new Color(0x496b22);
-    public final Color verdeEscuro = new Color(0x0e450b);
-    public final Color verdeMaisEscuro = new Color(0x1b2a09);
-
     private final RenderizadorJogo renderizadorJogo;
     private final BufferedImage canvas = new BufferedImage(
             Config.TABULEIRO_LADO,

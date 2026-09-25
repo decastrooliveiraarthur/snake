@@ -11,12 +11,10 @@ public class Tabuleiro {
     private final int casaLado = 2;
     private final int tabuleiroLado = 16;
     private final int ladoTotal = (tabuleiroLado * casaLado) + (bordaEspessura * 2);
-    //Color cor0 = Config.VERDE_MAIS_CLARO;
-    //Color cor1 = Config.VERDE_CLARO;
 
-    public int getTabuleiroArea() {
+    public int getTabuleiroLado() {
 
-        return tabuleiroLado * tabuleiroLado;
+        return tabuleiroLado;
     }
 
     public Tabuleiro() {}
@@ -30,8 +28,8 @@ public class Tabuleiro {
 
     public void desenharCasas(Graphics2D gCanvas, int indice, Color verdeMaisClaro, Color verdeClaro) {
 
-        int linha = converterIndiceParaLinhaColuna(indice)[0];
-        int coluna = converterIndiceParaLinhaColuna(indice)[1];
+        int linha = Conversor.converterIndiceParaLinhaColuna(indice)[0];
+        int coluna = Conversor.converterIndiceParaLinhaColuna(indice)[1];
 
         if ((linha + coluna) % 2 == 0) {
 
@@ -46,18 +44,5 @@ public class Tabuleiro {
                 this.y + bordaEspessura + (coluna * casaLado),
                 casaLado,
                 casaLado);
-    }
-
-    public int[] converterIndiceParaLinhaColuna(int indice) {
-
-        int linha = indice / tabuleiroLado;
-        int coluna = indice % tabuleiroLado;
-
-        return new int[] {linha, coluna};
-    }
-
-    public int converterLinhaColunaParaIndice(int linha, int coluna) {
-
-        return linha * tabuleiroLado + coluna;
     }
 }

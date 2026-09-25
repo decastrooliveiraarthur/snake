@@ -7,20 +7,15 @@ import javax.swing.Timer;
 
 public class Cobra {
 
-    private final Tabuleiro tabuleiro;
-
     private final boolean[] direcaoVelha = new boolean[]{false, true};
     private final boolean[] direcaoNova = new boolean[2];
 
     private final long[] bitboard = new long[4];
 
-    private int construtor;
+    private int construtor = Conversor.converterLinhaColunaParaIndice(8, 8);
     private int destruidor;
 
-    public Cobra(Tabuleiro tabuleiro) {
-
-        this.tabuleiro = tabuleiro;
-        construtor = tabuleiro.converterLinhaColunaParaIndice(8, 8);
+    public Cobra() {
 
         Timer timer = new Timer(1000, atualizarPosicao);
         timer.start();
@@ -43,8 +38,8 @@ public class Cobra {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            int construtorLinha = tabuleiro.converterIndiceParaLinhaColuna(construtor)[0];
-            int construtorColuna = tabuleiro.converterIndiceParaLinhaColuna(construtor)[1];
+            int construtorLinha = Conversor.converterIndiceParaLinhaColuna(construtor)[0];
+            int construtorColuna = Conversor.converterIndiceParaLinhaColuna(construtor)[1];
 
             int direcaoCase = (int)
                     (((direcaoNova[0] ? 1 : 0) << 1) +
@@ -69,7 +64,7 @@ public class Cobra {
                     break;
             }
 
-            construtor = tabuleiro.converterLinhaColunaParaIndice(construtorLinha, construtorColuna);
+            construtor = Conversor.converterLinhaColunaParaIndice(construtorLinha, construtorColuna);
 
             int bloco = construtor >>> 6;
             int bit = construtor & 63;
