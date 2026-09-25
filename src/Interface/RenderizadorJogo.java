@@ -1,3 +1,9 @@
+package Interface;
+
+import Camadas.Cobra;
+import Camadas.Maca;
+import Camadas.Tabuleiro;
+
 import java.awt.Graphics2D;
 
 public class RenderizadorJogo {
@@ -5,6 +11,8 @@ public class RenderizadorJogo {
     private final Tabuleiro tabuleiro;
     private final Maca maca = new Maca();
     private final Cobra cobra;
+
+
 
     public RenderizadorJogo(Tabuleiro tabuleiro, Cobra cobra) {
 
@@ -16,7 +24,7 @@ public class RenderizadorJogo {
 
         this.tabuleiro.desenharBorda(gCanvas);
 
-        for (int i = 0; i < (this.tabuleiro.getCasasQuantidadeTotal()); i++) {
+        for (int i = 0; i < (this.tabuleiro.getTabuleiroArea()); i++) {
 
             //casas do tabuleiro
             if (!this.cobra.ocupaCasa(i)) {

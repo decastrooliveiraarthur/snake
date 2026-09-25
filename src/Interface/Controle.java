@@ -1,3 +1,7 @@
+package Interface;
+
+import Camadas.Cobra;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;

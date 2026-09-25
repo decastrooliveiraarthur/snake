@@ -4,14 +4,17 @@ public final class Config {
 
     private Config() {}
 
-    //Janela
+    //Interface.Janela
     public static final String JANELA_TITULO = "Snake Game";
 
-    //Tabuleiro
+    //Componentes.Tabuleiro
     public static final int TABULEIRO_CASAS_TAMANHO = 2;
     public static final int TABULEIRO_CASAS_QUANTIDADE_LADO = 16;
     public static final int TABULEIRO_BORDA_ESPESSURA = 1;
-    public static final int TABULEIRO_LADO = (TABULEIRO_CASAS_QUANTIDADE_LADO * TABULEIRO_CASAS_TAMANHO) + (TABULEIRO_BORDA_ESPESSURA * 2);
+    public static final int TABULEIRO_LADO =
+            (TABULEIRO_CASAS_QUANTIDADE_LADO *
+                    TABULEIRO_CASAS_TAMANHO) +
+                    (TABULEIRO_BORDA_ESPESSURA * 2);
 
     //Cores
     public static final Color VERDE_MAIS_CLARO = new Color(0x9a9e3f);

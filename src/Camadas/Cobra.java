@@ -1,3 +1,5 @@
+package Camadas;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -12,13 +14,13 @@ public class Cobra {
 
     private final long[] bitboard = new long[4];
 
-    private short construtor;
-    private short destruidor;
+    private int construtor;
+    private int destruidor;
 
     public Cobra(Tabuleiro tabuleiro) {
 
         this.tabuleiro = tabuleiro;
-        construtor = tabuleiro.conversorLinhaColuna(8, 8);
+        construtor = tabuleiro.converterLinhaColunaParaIndice(8, 8);
 
         Timer timer = new Timer(1000, atualizarPosicao);
         timer.start();
@@ -41,10 +43,10 @@ public class Cobra {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            byte construtorLinha = tabuleiro.conversorLinhaColuna(construtor)[0];
-            byte construtorColuna = tabuleiro.conversorLinhaColuna(construtor)[1];
+            int construtorLinha = tabuleiro.converterIndiceParaLinhaColuna(construtor)[0];
+            int construtorColuna = tabuleiro.converterIndiceParaLinhaColuna(construtor)[1];
 
-            byte direcaoCase = (byte)
+            int direcaoCase = (int)
                     (((direcaoNova[0] ? 1 : 0) << 1) +
                             (direcaoNova[1] ? 1 : 0));
 
@@ -67,7 +69,7 @@ public class Cobra {
                     break;
             }
 
-            construtor = tabuleiro.conversorLinhaColuna(construtorLinha, construtorColuna);
+            construtor = tabuleiro.converterLinhaColunaParaIndice(construtorLinha, construtorColuna);
 
             int bloco = construtor >>> 6;
             int bit = construtor & 63;

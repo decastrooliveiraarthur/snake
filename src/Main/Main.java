@@ -1,3 +1,8 @@
+package Main;
+
+import Camadas.Cobra;
+import Camadas.Tabuleiro;
+
 import javax.swing.SwingUtilities;
 
 public class Main {
