@@ -16,7 +16,6 @@ public class Janela extends JFrame {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(telaJogo, BorderLayout.CENTER);
-        telaJogo.setBackground(telaJogo.getVerdeMaisEscuro());
         pack();
         setMinimumSize(new Dimension(
                 lado + getInsets().left + getInsets().right,

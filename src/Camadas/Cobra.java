@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Cobra {
 
     private final boolean[] direcaoVelha = new boolean[]{false, true};
-    private final boolean[] direcaoNova = new boolean[2];
+    private final boolean[] direcaoNova = new boolean[]{false, true};
     private final long[] bitboard = new long[4];
     private int construtor = Conversor.linhaColunaParaIndice(new Conversor.Posicao(8, 8));
     private int destruidor;
@@ -45,7 +45,7 @@ public class Cobra {
         int bit = construtor & 63;
         long mascara = 1L << bit;
 
-        bitboard[bloco] = mascara;
+        bitboard[bloco] = bitboard[bloco] | mascara;
 
         direcaoVelha[0] = direcaoNova[0];
         direcaoVelha[1] = direcaoNova[1];

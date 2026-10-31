@@ -26,7 +26,7 @@ public class RenderizadorJogo {
         long[] tabuleiroBitboard = new long[4];
 
         for (int i = 0; i < tabuleiroBitboard.length; i++) {
-            tabuleiroBitboard[0] = ~(cobra.getBitboard()[0] | maca.getBitboard()[0]);
+            tabuleiroBitboard[i] = ~(cobra.getBitboard()[i] | maca.getBitboard()[i]);
         }
         return tabuleiroBitboard;
     }

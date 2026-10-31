@@ -1,6 +1,5 @@
 package Interface;
 
-
 import Camadas.Cobra;
 import Camadas.Conversor;
 import Camadas.Maca;
@@ -16,25 +15,19 @@ public class TelaJogo extends JPanel {
 
     private static final int X = 0;
     private static final int Y = 0;
-    private static final Color VERDE_MAIS_CLARO = new Color(0x9a9e3f);
-    private static final Color VERDE_CLARO = new Color(0x496b22);
-    private static final Color VERDE_ESCURO = new Color(0x0e450b);
-    private static final Color VERDE_MAIS_ESCURO = new Color(0x1b2a09);
     private final int telaPixeisLado;
     private final Cobra cobra;
     private final Maca maca;
     private final Tabuleiro tabuleiro;
     private final RenderizadorJogo renderizadorJogo;
 
-    //private final Controle controle = new Controle(this, cobra);
-
     private final BufferedImage canvas;
-    private final Graphics2D gCanvas;
     private final ActionListener atualizarFrame = new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            gCanvas = canvas.createGraphics();
             cobra.mover();
             desenharBorda();
             desenharJogo();
@@ -42,6 +35,7 @@ public class TelaJogo extends JPanel {
             repaint();
         }
     };
+    private Graphics2D gCanvas;
     private Rectangle area;
 
     public TelaJogo(Cobra cobra, Maca maca, Tabuleiro tabuleiro, RenderizadorJogo renderizadorJogo) {
@@ -52,10 +46,9 @@ public class TelaJogo extends JPanel {
         this.renderizadorJogo = renderizadorJogo;
         this.telaPixeisLado = tabuleiro.getTabuleiroTotalPixeisLado();
         this.canvas = new BufferedImage(telaPixeisLado, telaPixeisLado, BufferedImage.TYPE_INT_RGB);
-        this.gCanvas = this.canvas.createGraphics();
 
         setPreferredSize(new Dimension(telaPixeisLado * 16, telaPixeisLado * 16));
-
+        setBackground(Verde.MAIS_ESCURO.get());
 
         Timer timer = new Timer(1000, atualizarFrame);
         timer.start();
@@ -84,9 +77,6 @@ public class TelaJogo extends JPanel {
         //Objetos necessários
         Graphics2D g2d = (Graphics2D) g;
 
-        //this.renderizadorJogo.renderizarJogo(this.gCanvas);
-        //this.gCanvas.dispose();
-
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
         if (this.area != null) {
@@ -101,17 +91,16 @@ public class TelaJogo extends JPanel {
 
     private void desenharBorda() {
 
-        this.gCanvas.setColor(VERDE_MAIS_CLARO);
+        this.gCanvas.setColor(Verde.MAIS_CLARO.get());
         this.gCanvas.fillRect(X, Y, telaPixeisLado, telaPixeisLado);
     }
 
     /**
-     * Recebe um índice de 0 a 255, que representa a posição de um tabuleiro 16 * 16, da esquerda para direita,
-     * de cima para baixo. E um bitboard: {@code long[] bitboard = new long[4]}.
      * Checa se a posição {@code i} do bitboard está preenchida.
      *
-     * @param indice
-     * @param bitboard
+     * @param indice   inteiro de 0 a 255, que representa a posição de um tabuleiro 16 * 16,
+     *                 da esquerda para direita, de cima para baixo.
+     * @param bitboard bitboard das posições a serem conferidas: {@code long[] bitboard = new long[4]}.
      * @return {@code true} para posição preenchida (1) e {@code false} para posição vazia (0).
      */
     private boolean ocupaCasa(int indice, long[] bitboard) {
@@ -126,22 +115,18 @@ public class TelaJogo extends JPanel {
     private void desenharTabuleiro(int linha, int coluna) {
 
         if ((linha + coluna) % 2 == 0)
-            this.gCanvas.setColor(VERDE_MAIS_CLARO);
+            this.gCanvas.setColor(Verde.MAIS_CLARO.get());
         else
-            this.gCanvas.setColor(VERDE_CLARO);
+            this.gCanvas.setColor(Verde.CLARO.get());
     }
 
     private void desenharCobra() {
 
-        this.gCanvas.setColor(VERDE_ESCURO);
-    }
-
-    public Color getVerdeMaisEscuro() {
-        return VERDE_MAIS_ESCURO;
+        this.gCanvas.setColor(Verde.ESCURO.get());
     }
 
     private void desenharMaca() {
-        this.gCanvas.setColor(VERDE_MAIS_ESCURO);
+        this.gCanvas.setColor(Verde.MAIS_ESCURO.get());
     }
 
     /**
@@ -159,11 +144,11 @@ public class TelaJogo extends JPanel {
             int lado = this.tabuleiro.getPixeisCasasLado();
 
             if (ocupaCasa(i, this.renderizadorJogo.getTabuleiroBitboard()))
-                desenharTabuleiro(linha, coluna);/*
+                desenharTabuleiro(linha, coluna);
             else if (ocupaCasa(i, this.cobra.getBitboard()))
                 desenharCobra();
             else if (ocupaCasa(i, this.maca.getBitboard()))
-                desenharMaca();*/
+                desenharMaca();
 
             this.gCanvas.fillRect(x, y, lado, lado);
         }

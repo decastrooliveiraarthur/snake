@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class Main {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
 
         Cobra cobra = new Cobra();
         Maca maca = new Maca();
