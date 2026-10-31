@@ -2,49 +2,32 @@ package Interface;
 
 import Camadas.Cobra;
 import Camadas.Maca;
-import Camadas.Tabuleiro;
 
-import java.awt.*;
-
+/**
+ * Recebe as informações (bitboard) das classes Cobra e Maca, sobrepõe os dois bitboards para criar um só,
+ * e retorna para que a classe TelaJogo possa desenhá-lo.
+ *
+ * @author Arthur de Castro Oliveira
+ * @version 2.0
+ */
 public class RenderizadorJogo {
 
-    private final Tabuleiro tabuleiro;
     private final Maca maca;
     private final Cobra cobra;
 
-    private final long[] tabuleiroBitboard = new long[4];
-    private final int tabuleiroLado;
+    public RenderizadorJogo(Cobra cobra, Maca maca) {
 
-    public final Color verdeMaisClaro = new Color(0x9a9e3f);
-    public final Color verdeClaro = new Color(0x496b22);
-    public final Color verdeEscuro = new Color(0x0e450b);
-    public final Color verdeMaisEscuro = new Color(0x1b2a09);
-
-    public RenderizadorJogo(Tabuleiro tabuleiro, Maca maca, Cobra cobra) {
-
-        this.tabuleiro = tabuleiro;
         this.maca = maca;
         this.cobra = cobra;
-
-        this.tabuleiroLado = tabuleiro.getTabuleiroLado();
     }
 
-    public void renderizarJogo(Graphics2D gCanvas) {
+    public long[] getTabuleiroBitboard() {
 
-        int tabuleiroArea = this.tabuleiroLado * this.tabuleiroLado;
+        long[] tabuleiroBitboard = new long[4];
 
-        this.tabuleiro.desenharBorda(gCanvas, this.verdeMaisClaro);
-
-        for (int i = 0; i < tabuleiroArea; i++) {
-
-            //casas do tabuleiro
-            if (!this.cobra.ocupaCasa(i)) {
-
-                this.tabuleiro.desenharCasas(gCanvas, i, this.verdeMaisClaro, this.verdeClaro);
-            } else {
-
-                
-            }
+        for (int i = 0; i < tabuleiroBitboard.length; i++) {
+            tabuleiroBitboard[0] = ~(cobra.getBitboard()[0] | maca.getBitboard()[0]);
         }
+        return tabuleiroBitboard;
     }
 }

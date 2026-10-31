@@ -1,21 +1,27 @@
+//Classe ajustada
+
 package Camadas;
 
-final class Conversor {
+public final class Conversor {
 
-    private static final int CASAS_LADO = 16;
+    private static final int JOGO_CASAS_LADO = 16;
 
-    private Conversor() {}
-
-    public static int[] converterIndiceParaLinhaColuna(int indice) {
-
-        int linha = indice / CASAS_LADO;
-        int coluna = indice % CASAS_LADO;
-
-        return new int[] {linha, coluna};
+    private Conversor() {
     }
 
-    public static int converterLinhaColunaParaIndice(int linha, int coluna) {
+    public static Posicao indiceParaLinhaColuna(int indice) {
 
-        return linha * CASAS_LADO + coluna;
+        int linha = indice / JOGO_CASAS_LADO;
+        int coluna = indice % JOGO_CASAS_LADO;
+
+        return new Posicao(linha, coluna);
+    }
+
+    public static int linhaColunaParaIndice(Posicao posicao) {
+
+        return posicao.linha * JOGO_CASAS_LADO + posicao.coluna;
+    }
+
+    public record Posicao(int linha, int coluna) {
     }
 }

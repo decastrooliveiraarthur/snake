@@ -1,23 +1,27 @@
 package Interface;
 
-import javax.swing.JFrame;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 
 public class Janela extends JFrame {
 
+    private static final String JANELA_TITULO = "Snake Game";
+
     public Janela(TelaJogo telaJogo) {
 
-        super(Config.JANELA_TITULO);
+        super(JANELA_TITULO);
+
+        int lado = telaJogo.getTelaPixeisLado();
 
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(Config.VERDE_MAIS_ESCURO);
         add(telaJogo, BorderLayout.CENTER);
+        telaJogo.setBackground(telaJogo.getVerdeMaisEscuro());
         pack();
         setMinimumSize(new Dimension(
-                Config.TABULEIRO_LADO + getInsets().left + getInsets().right,
-                Config.TABULEIRO_LADO + getInsets().top + getInsets().bottom));
+                lado + getInsets().left + getInsets().right,
+                lado + getInsets().top + getInsets().bottom));
         setLocationRelativeTo(null);
+        setVisible(true);
     }
 }

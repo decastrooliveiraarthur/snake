@@ -1,48 +1,27 @@
-package Camadas;
+//Classe ajustada
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+package Camadas;
 
 public class Tabuleiro {
 
-    private final int x = 0;
-    private final int y = 0;
-    private final int bordaEspessura = 1;
-    private final int casaLado = 2;
-    private final int tabuleiroLado = 16;
-    private final int ladoTotal = (tabuleiroLado * casaLado) + (bordaEspessura * 2);
+    private static final int PIXEIS_BORDA = 1;
+    private static final int PIXEIS_CASAS_LADO = 2;
+    private static final int TABULEIRO_CASAS_LADO = 16;
 
-    public int getTabuleiroLado() {
-
-        return tabuleiroLado;
+    public Tabuleiro() {
     }
 
-    public Tabuleiro() {}
+    public int getTabuleiroTotalPixeisLado() {
 
-    public void desenharBorda(Graphics2D gCanvas, Color verdeMaisClaro) {
-
-        //borda do tabuleiro
-        gCanvas.setColor(verdeMaisClaro);
-        gCanvas.fillRect(this.x, this.y, ladoTotal, ladoTotal);
+        return (TABULEIRO_CASAS_LADO * PIXEIS_CASAS_LADO) + (PIXEIS_BORDA * 2);
     }
 
-    public void desenharCasas(Graphics2D gCanvas, int indice, Color verdeMaisClaro, Color verdeClaro) {
-
-        int linha = Conversor.converterIndiceParaLinhaColuna(indice)[0];
-        int coluna = Conversor.converterIndiceParaLinhaColuna(indice)[1];
-
-        if ((linha + coluna) % 2 == 0) {
-
-            gCanvas.setColor(verdeMaisClaro);
-        } else {
-
-            gCanvas.setColor(verdeClaro);
-        }
-
-        gCanvas.fillRect(
-                this.x + bordaEspessura + (linha * casaLado),
-                this.y + bordaEspessura + (coluna * casaLado),
-                casaLado,
-                casaLado);
+    public int getPixeisCasasLado() {
+        return PIXEIS_CASAS_LADO;
     }
+
+    public int getPixeisBorda() {
+        return PIXEIS_BORDA;
+    }
+
 }
