@@ -11,7 +11,7 @@ public class Janela extends JFrame {
 
         super(JANELA_TITULO);
 
-        int lado = telaJogo.getTelaPixeisLado();
+        int lado = Tabuleiro.getTabuleiroTotalPixeisLado() * 16;
 
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

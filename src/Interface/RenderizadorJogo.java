@@ -1,24 +1,33 @@
 package Interface;
 
 import Camadas.Cobra;
+import Camadas.Conversor;
 import Camadas.Maca;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 /**
- * Recebe as informações (bitboard) das classes Cobra e Maca, sobrepõe os dois bitboards para criar um só,
- * e retorna para que a classe TelaJogo possa desenhá-lo.
+ * Usa as informações das classes {@link Cobra} e {@link Maca} para desenhar o jogo em um {@link BufferedImage}.
  *
  * @author Arthur de Castro Oliveira
- * @version 2.0
+ * @version 3.0
  */
 public class RenderizadorJogo {
 
+    private final BufferedImage canvas;
     private final Maca maca;
     private final Cobra cobra;
+    private final int origemX = Tabuleiro.ORIGEM_X.get();
+    private final int origemY = Tabuleiro.ORIGEM_Y.get();
+    private final int lado = Tabuleiro.getTabuleiroTotalPixeisLado();
+    private Graphics2D gCanvas;
 
     public RenderizadorJogo(Cobra cobra, Maca maca) {
 
         this.maca = maca;
         this.cobra = cobra;
+        this.canvas = new BufferedImage(lado, lado, BufferedImage.TYPE_INT_RGB);
     }
 
     public long[] getTabuleiroBitboard() {
@@ -29,5 +38,83 @@ public class RenderizadorJogo {
             tabuleiroBitboard[i] = ~(cobra.getBitboard()[i] | maca.getBitboard()[i]);
         }
         return tabuleiroBitboard;
+    }
+
+
+    public void desenharBorda() {
+
+        this.gCanvas.setColor(Cores.VERDE_MAIS_CLARO.get());
+        this.gCanvas.fillRect(origemX, origemY, lado, lado);
+    }
+
+    private void desenharCobra() {
+
+        this.gCanvas.setColor(Cores.VERDE_ESCURO.get());
+    }
+
+    private void desenharMaca() {
+        this.gCanvas.setColor(Cores.VERDE_MAIS_ESCURO.get());
+    }
+
+    private void desenharTabuleiro(int linha, int coluna) {
+
+        if ((linha + coluna) % 2 == 0)
+            this.gCanvas.setColor(Cores.VERDE_MAIS_CLARO.get());
+        else
+            this.gCanvas.setColor(Cores.VERDE_CLARO.get());
+    }
+
+    /**
+     * Desenha toda a área ativa do jogo de uma só vez.
+     */
+    public void desenharJogo() {
+
+        for (int i = 0; i < 64 * 4; i++) {
+
+            int linha = Conversor.indiceParaLinhaColuna(i).linha();
+            int coluna = Conversor.indiceParaLinhaColuna(i).coluna();
+
+            int lado = Tabuleiro.PIXEIS_CASAS_LADO.get();
+            int x = origemX + Tabuleiro.PIXEIS_BORDA.get() + (coluna * lado);
+            int y = origemY + Tabuleiro.PIXEIS_BORDA.get() + (linha * lado);
+
+            if (ocupaCasa(i, getTabuleiroBitboard()))
+                desenharTabuleiro(linha, coluna);
+            else if (ocupaCasa(i, this.cobra.getBitboard()))
+                desenharCobra();
+            else if (ocupaCasa(i, this.maca.getBitboard()))
+                desenharMaca();
+
+            this.gCanvas.fillRect(x, y, lado, lado);
+        }
+    }
+
+    /**
+     * Checa se a posição {@code i} do bitboard está preenchida.
+     *
+     * @param indice   inteiro de 0 a 255, que representa a posição de um tabuleiro 16 * 16,
+     *                 da esquerda para direita, de cima para baixo.
+     * @param bitboard bitboard das posições a serem conferidas: {@code long[] bitboard = new long[4]}.
+     * @return {@code true} para posição preenchida (1) e {@code false} para posição vazia (0).
+     */
+    private boolean ocupaCasa(int indice, long[] bitboard) {
+
+        int bloco = indice >>> 6;
+        int bit = indice & 63;
+        long mascara = 1L << bit;
+
+        return (bitboard[bloco] & mascara) != 0;
+    }
+
+    public BufferedImage getCanvas() {
+        return canvas;
+    }
+
+    public Graphics2D getGCanvas() {
+        return gCanvas;
+    }
+
+    public void atualizarGCanvas() {
+        gCanvas = canvas.createGraphics();
     }
 }
