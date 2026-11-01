@@ -2,7 +2,7 @@ package Main;
 
 import Main.Camadas.Cobra;
 import Main.Camadas.Maca;
-import Main.Controle.Controle;
+import Main.Motor.Controle;
 import Main.Interface.Janela;
 import Main.Interface.RenderizadorJogo;
 import Main.Interface.TelaJogo;

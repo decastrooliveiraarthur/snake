@@ -1,4 +1,4 @@
-package Main.Controle;
+package Main.Motor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

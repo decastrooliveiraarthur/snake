@@ -1,6 +1,6 @@
 package Main.Camadas;
 
-import Main.Controle.Controle;
+import Main.Motor.Controle;
 import Main.Conversor;
 import Main.Tabuleiro;
 
