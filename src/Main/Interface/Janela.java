@@ -1,4 +1,6 @@
-package Interface;
+package Main.Interface;
+
+import Main.Tabuleiro;
 
 import javax.swing.*;
 import java.awt.*;

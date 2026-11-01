@@ -1,26 +1,28 @@
 package Main;
 
-import Camadas.Cobra;
-import Camadas.Maca;
-import Controle.Controle;
-import Interface.Janela;
-import Interface.RenderizadorJogo;
-import Interface.TelaJogo;
+import Main.Camadas.Cobra;
+import Main.Camadas.Maca;
+import Main.Controle.Controle;
+import Main.Interface.Janela;
+import Main.Interface.RenderizadorJogo;
+import Main.Interface.TelaJogo;
+import Main.Motor.Motor;
 
 import javax.swing.*;
 
 public class Main {
 
-    static void main() {
+    static void main(@SuppressWarnings("unused") String[] args) {
 
-        Cobra cobra = new Cobra();
         Maca maca = new Maca();
 
         SwingUtilities.invokeLater(() -> {
 
+            Controle controle = new Controle();
+            Cobra cobra = new Cobra(controle);
             RenderizadorJogo renderizadorJogo = new RenderizadorJogo(cobra, maca);
-            TelaJogo telaJogo = new TelaJogo(cobra, renderizadorJogo);
-            new Controle(cobra, telaJogo);
+            TelaJogo telaJogo = new TelaJogo(renderizadorJogo);
+            new Motor(cobra, controle, renderizadorJogo, telaJogo);
             new Janela(telaJogo);
         });
     }

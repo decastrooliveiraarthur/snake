@@ -1,8 +1,9 @@
-package Interface;
+package Main.Interface;
 
-import Camadas.Cobra;
-import Camadas.Conversor;
-import Camadas.Maca;
+import Main.Camadas.Cobra;
+import Main.Camadas.Maca;
+import Main.Conversor;
+import Main.Tabuleiro;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -40,8 +41,7 @@ public class RenderizadorJogo {
         return tabuleiroBitboard;
     }
 
-
-    public void desenharBorda() {
+    private void desenharBorda() {
 
         this.gCanvas.setColor(Cores.VERDE_MAIS_CLARO.get());
         this.gCanvas.fillRect(origemX, origemY, lado, lado);
@@ -67,7 +67,7 @@ public class RenderizadorJogo {
     /**
      * Desenha toda a área ativa do jogo de uma só vez.
      */
-    public void desenharJogo() {
+    private void desenharCamadas() {
 
         for (int i = 0; i < 64 * 4; i++) {
 
@@ -99,22 +99,23 @@ public class RenderizadorJogo {
      */
     private boolean ocupaCasa(int indice, long[] bitboard) {
 
-        int bloco = indice >>> 6;
-        int bit = indice & 63;
-        long mascara = 1L << bit;
-
-        return (bitboard[bloco] & mascara) != 0;
+        return (bitboard[Conversor.indiceParaBitboard(indice).bloco()] &
+                Conversor.indiceParaBitboard(indice).mascara()) != 0;
     }
 
     public BufferedImage getCanvas() {
         return canvas;
     }
 
-    public Graphics2D getGCanvas() {
-        return gCanvas;
+    private void atualizarGCanvas() {
+        gCanvas = canvas.createGraphics();
     }
 
-    public void atualizarGCanvas() {
-        gCanvas = canvas.createGraphics();
+    public void desenharJogo() {
+
+        atualizarGCanvas();
+        desenharBorda();
+        desenharCamadas();
+        gCanvas.dispose();
     }
 }

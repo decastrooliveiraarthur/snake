@@ -1,10 +1,9 @@
-package Interface;
+package Main.Interface;
 
-import Camadas.Cobra;
+import Main.Tabuleiro;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class TelaJogo extends JPanel {
 
@@ -12,26 +11,13 @@ public class TelaJogo extends JPanel {
 
     private Rectangle area;
 
-    public TelaJogo(Cobra cobra, RenderizadorJogo renderizadorJogo) {
+    public TelaJogo(RenderizadorJogo renderizadorJogo) {
 
         this.renderizadorJogo = renderizadorJogo;
         int lado = Tabuleiro.getTabuleiroTotalPixeisLado();
 
-        ActionListener atualizarFrame = _ -> {
-
-            cobra.mover();
-            renderizadorJogo.atualizarGCanvas();
-            renderizadorJogo.desenharBorda();
-            renderizadorJogo.desenharJogo();
-            renderizadorJogo.getGCanvas().dispose();
-            repaint();
-        };
-
         setPreferredSize(new Dimension(lado * 16, lado * 16));
         setBackground(Cores.VERDE_MAIS_ESCURO.get());
-
-        Timer timer = new Timer(1000, atualizarFrame);
-        timer.start();
     }
 
     @Override
