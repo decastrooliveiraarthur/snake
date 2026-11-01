@@ -1,7 +1,7 @@
 package Main.Camadas;
 
-import Main.Motor.Controle;
 import Main.Conversor;
+import Main.Motor.Controle;
 import Main.Tabuleiro;
 
 public class Cobra {

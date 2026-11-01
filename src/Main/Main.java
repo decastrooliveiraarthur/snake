@@ -2,10 +2,10 @@ package Main;
 
 import Main.Camadas.Cobra;
 import Main.Camadas.Maca;
-import Main.Motor.Controle;
 import Main.Interface.Janela;
 import Main.Interface.RenderizadorJogo;
 import Main.Interface.TelaJogo;
+import Main.Motor.Controle;
 import Main.Motor.Motor;
 
 import javax.swing.*;
