@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class Main {
 
-    static void main(@SuppressWarnings("unused") String[] args) {
+    public static void main(String[] args) {
 
         Maca maca = new Maca();
 

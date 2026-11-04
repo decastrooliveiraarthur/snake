@@ -31,16 +31,6 @@ public class RenderizadorJogo {
         this.canvas = new BufferedImage(lado, lado, BufferedImage.TYPE_INT_RGB);
     }
 
-    public long[] getTabuleiroBitboard() {
-
-        long[] tabuleiroBitboard = new long[4];
-
-        for (int i = 0; i < tabuleiroBitboard.length; i++) {
-            tabuleiroBitboard[i] = ~(cobra.getBitboard()[i] | maca.getBitboard()[i]);
-        }
-        return tabuleiroBitboard;
-    }
-
     private void desenharBorda() {
 
         this.gCanvas.setColor(Cores.VERDE_MAIS_CLARO.get());
@@ -78,12 +68,12 @@ public class RenderizadorJogo {
             int x = origemX + Tabuleiro.PIXEIS_BORDA.get() + (coluna * lado);
             int y = origemY + Tabuleiro.PIXEIS_BORDA.get() + (linha * lado);
 
-            if (ocupaCasa(i, getTabuleiroBitboard()))
-                desenharTabuleiro(linha, coluna);
+            if (ocupaCasa(i, this.maca.getBitboard()))
+                desenharMaca();
             else if (ocupaCasa(i, this.cobra.getBitboard()))
                 desenharCobra();
-            else if (ocupaCasa(i, this.maca.getBitboard()))
-                desenharMaca();
+            else
+                desenharTabuleiro(linha, coluna);
 
             this.gCanvas.fillRect(x, y, lado, lado);
         }

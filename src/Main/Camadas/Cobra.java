@@ -11,6 +11,8 @@ public class Cobra {
     private final long[] bitboard = new long[4];
     private int construtorLinha = 8;
     private int construtorColuna = 8;
+    private final Conversor.Posicao construtorPosicaoInicial =
+            new Conversor.Posicao(construtorLinha, construtorColuna);
     private int destruidor;
 
     public Cobra(Controle controle) {
@@ -37,11 +39,13 @@ public class Cobra {
 
     private void construirCobra() {
 
-        int construtorIndice = Conversor.linhaColunaParaIndice(
-                new Conversor.Posicao(this.construtorLinha, this.construtorColuna));
+        Conversor.Posicao construtorPosicaoNova =
+                new Conversor.Posicao(this.construtorLinha, construtorColuna);
+        int construtorIndice = Conversor.linhaColunaParaIndice(construtorPosicaoNova);
+        int construtorBloco = Conversor.indiceParaBitboard(construtorIndice).bloco();
+        long construtorMascara = Conversor.indiceParaBitboard(construtorIndice).mascara();
 
-        bitboard[Conversor.indiceParaBitboard(construtorIndice).bloco()] |=
-                Conversor.indiceParaBitboard(construtorIndice).mascara();
+        bitboard[construtorBloco] |= construtorMascara;
     }
 
     private void atualizarPosicaoConstrutor() {
@@ -74,5 +78,12 @@ public class Cobra {
 
         this.construtorLinha = ciclarBorda(this.construtorLinha);
         this.construtorColuna = ciclarBorda(this.construtorColuna);
+    }
+
+    public void setPosicaoInicial() {
+
+        int bloco = Conversor.linhaColunaParaBitboard(construtorPosicaoInicial).bloco();
+        long mascara = Conversor.linhaColunaParaBitboard(construtorPosicaoInicial).mascara();
+        bitboard[bloco] |= mascara;
     }
 }

@@ -6,62 +6,61 @@ import java.util.Arrays;
 
 public class Controle {
 
-    private final boolean[] direcaoVelha = new boolean[]{false, true};
-    private final boolean[] direcaoNova = new boolean[]{false, true};
+    private static final boolean[] DIRECAO_CIMA = new boolean[]{false, false};
+    private static final boolean[] DIRECAO_DIREITA = new boolean[]{false, true};
+    private static final boolean[] DIRECAO_ESQUERDA = new boolean[]{true, false};
+    private static final boolean[] DIRECAO_BAIXO = new boolean[]{true, true};
 
-
+    private final boolean[] direcaoVelha = DIRECAO_DIREITA.clone();
     private final Action actionUp = new AbstractAction() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setDirecaoNova(false, false);
+            direcaoNova = setDirecaoNova(DIRECAO_CIMA);
         }
     };
-
     private final Action actionRight = new AbstractAction() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setDirecaoNova(false, true);
+            direcaoNova = setDirecaoNova(DIRECAO_DIREITA);
         }
     };
-
     private final Action actionLeft = new AbstractAction() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setDirecaoNova(true, false);
+            direcaoNova = setDirecaoNova(DIRECAO_ESQUERDA);
         }
     };
-
     private final Action actionDown = new AbstractAction() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setDirecaoNova(true, true);
+            direcaoNova = setDirecaoNova(DIRECAO_BAIXO);
         }
     };
+    private boolean[] direcaoNova = DIRECAO_DIREITA.clone();
 
     public Controle() {
     }
 
-    public void setDirecaoNova(boolean direcao0, boolean direcao1) {
+    public boolean[] getDirecaoNova() {
+        return this.direcaoNova;
+    }
 
-        boolean[] direcaoNova = new boolean[]{direcao0, direcao1};
+    public boolean[] setDirecaoNova(boolean[] direcaoNova) {
+
         boolean[] inversoDirecaoVelha = new boolean[]{!direcaoVelha[0], !direcaoVelha[1]};
 
         if (!Arrays.equals(direcaoNova, inversoDirecaoVelha)) {
 
-            this.direcaoNova[0] = direcaoNova[0];
-            this.direcaoNova[1] = direcaoNova[1];
+            return new boolean[]{direcaoNova[0], direcaoNova[1]};
         }
-    }
-
-    public boolean[] getDirecaoNova() {
         return this.direcaoNova;
     }
 
