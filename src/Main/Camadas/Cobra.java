@@ -9,11 +9,8 @@ public class Cobra {
     private final Controle controle;
 
     private final long[] bitboard = new long[4];
-    private int construtorLinha = 8;
-    private int construtorColuna = 8;
-    private final Conversor.Posicao construtorPosicaoInicial =
-            new Conversor.Posicao(construtorLinha, construtorColuna);
-    private int destruidor;
+    private final Construtor construtor = new Construtor();
+    private boolean colidiu = false;
 
     public Cobra(Controle controle) {
         this.controle = controle;
@@ -21,8 +18,15 @@ public class Cobra {
 
     public void mover() {
 
-        atualizarPosicaoConstrutor();
-        construirCobra();
+        construtor.atualizarPosicao();
+        construtor.construirCobra();
+    }
+
+    public void setPosicaoInicial() {
+
+        int bloco = Conversor.posicaoParaBitboard(construtor.linha, construtor.coluna).bloco();
+        long mascara = Conversor.posicaoParaBitboard(construtor.linha, construtor.coluna).mascara();
+        bitboard[bloco] |= mascara;
     }
 
     public long[] getBitboard() {
@@ -31,59 +35,82 @@ public class Cobra {
 
     private int ciclarBorda(int linhaColuna) {
         if (linhaColuna >= Tabuleiro.TABULEIRO_CASAS_LADO.get())
-            return 0;
+            return linhaColuna - Tabuleiro.TABULEIRO_CASAS_LADO.get();
         if (linhaColuna < 0)
-            return Tabuleiro.TABULEIRO_CASAS_LADO.get() - 1;
+            return linhaColuna + Tabuleiro.TABULEIRO_CASAS_LADO.get();
         return linhaColuna;
     }
 
-    private void construirCobra() {
-
-        Conversor.Posicao construtorPosicaoNova =
-                new Conversor.Posicao(this.construtorLinha, construtorColuna);
-        int construtorIndice = Conversor.linhaColunaParaIndice(construtorPosicaoNova);
-        int construtorBloco = Conversor.indiceParaBitboard(construtorIndice).bloco();
-        long construtorMascara = Conversor.indiceParaBitboard(construtorIndice).mascara();
-
-        bitboard[construtorBloco] |= construtorMascara;
+    public boolean isColidiu() {
+        return colidiu;
     }
 
-    private void atualizarPosicaoConstrutor() {
+    private class Destruidor {
+    }
 
-        int direcaoCase = (
-                ((controle.getDirecaoNova()[0] ? 1 : 0) << 1) + (controle.getDirecaoNova()[1] ? 1 : 0));
+    private class Construtor {
 
-        switch (direcaoCase) {
+        private int linha = 8;
+        private int coluna = 8;
 
-            case 0:
-                //cima
-                this.construtorLinha--;
-                break;
-
-            case 1:
-                //direita
-                this.construtorColuna++;
-                break;
-
-            case 2:
-                //esquerda
-                this.construtorColuna--;
-                break;
-
-            case 3:
-                //baixo
-                this.construtorLinha++;
-                break;
+        public Construtor() {
         }
 
-        this.construtorLinha = ciclarBorda(this.construtorLinha);
-        this.construtorColuna = ciclarBorda(this.construtorColuna);
-    }
+        private void construirCobra() {
 
-    public void setPosicaoInicial() {
+            int bloco = Conversor.posicaoParaBitboard(this.linha, this.coluna).bloco();
+            long mascara = Conversor.posicaoParaBitboard(this.linha, this.coluna).mascara();
 
-        int bloco = Conversor.linhaColunaParaBitboard(construtorPosicaoInicial).bloco();
-        long mascara = Conversor.linhaColunaParaBitboard(construtorPosicaoInicial).mascara();
-        bitboard[bloco] |= mascara;
+            bitboard[bloco] |= mascara;
+        }
+
+        private void atualizarPosicao() {
+
+            int direcaoCase = (((controle.getDirecaoNova()[0] ? 1 : 0) << 1) + (controle.getDirecaoNova()[1] ? 1 : 0));
+
+            switch (direcaoCase) {
+
+                case 0:
+                    //cima
+                    if (colisaoComCobra(this.linha - 1, this.coluna)) {
+                        colidiu = true;
+                    } else
+                        this.linha--;
+                    break;
+
+                case 1:
+                    //direita
+                    if (colisaoComCobra(this.linha, this.coluna + 1)) {
+                        colidiu = true;
+                    } else
+                        this.coluna++;
+                    break;
+
+                case 2:
+                    //esquerda
+                    if (colisaoComCobra(this.linha, this.coluna - 1)) {
+                        colidiu = true;
+                    } else
+                        this.coluna--;
+                    break;
+
+                case 3:
+                    //baixo
+                    if (colisaoComCobra(this.linha + 1, this.coluna)) {
+                        colidiu = true;
+                    } else
+                        this.linha++;
+                    break;
+            }
+
+            this.linha = ciclarBorda(this.linha);
+            this.coluna = ciclarBorda(this.coluna);
+        }
+
+        private boolean colisaoComCobra(int linha, int coluna) {
+
+            int indice = Conversor.posicaoParaIndice(ciclarBorda(linha), ciclarBorda(coluna));
+            return Conversor.ocupaCasa(indice, bitboard);
+        }
     }
 }

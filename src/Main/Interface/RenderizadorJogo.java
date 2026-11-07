@@ -61,36 +61,22 @@ public class RenderizadorJogo {
 
         for (int i = 0; i < 64 * 4; i++) {
 
-            int linha = Conversor.indiceParaLinhaColuna(i).linha();
-            int coluna = Conversor.indiceParaLinhaColuna(i).coluna();
+            int linha = Conversor.indiceParaPosicao(i).linha();
+            int coluna = Conversor.indiceParaPosicao(i).coluna();
 
             int lado = Tabuleiro.PIXEIS_CASAS_LADO.get();
             int x = origemX + Tabuleiro.PIXEIS_BORDA.get() + (coluna * lado);
             int y = origemY + Tabuleiro.PIXEIS_BORDA.get() + (linha * lado);
 
-            if (ocupaCasa(i, this.maca.getBitboard()))
+            if (Conversor.ocupaCasa(i, this.maca.getBitboard()))
                 desenharMaca();
-            else if (ocupaCasa(i, this.cobra.getBitboard()))
+            else if (Conversor.ocupaCasa(i, this.cobra.getBitboard()))
                 desenharCobra();
             else
                 desenharTabuleiro(linha, coluna);
 
             this.gCanvas.fillRect(x, y, lado, lado);
         }
-    }
-
-    /**
-     * Checa se a posição {@code i} do bitboard está preenchida.
-     *
-     * @param indice   inteiro de 0 a 255, que representa a posição de um tabuleiro 16 * 16,
-     *                 da esquerda para direita, de cima para baixo.
-     * @param bitboard bitboard das posições a serem conferidas: {@code long[] bitboard = new long[4]}.
-     * @return {@code true} para posição preenchida (1) e {@code false} para posição vazia (0).
-     */
-    private boolean ocupaCasa(int indice, long[] bitboard) {
-
-        return (bitboard[Conversor.indiceParaBitboard(indice).bloco()] &
-                Conversor.indiceParaBitboard(indice).mascara()) != 0;
     }
 
     public BufferedImage getCanvas() {
