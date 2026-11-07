@@ -1,25 +1,23 @@
-import javax.swing.JComponent;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+package Main.Interface;
 
-public class TelaJogo extends JComponent {
+import Main.Tabuleiro;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class TelaJogo extends JPanel {
 
     private final RenderizadorJogo renderizadorJogo;
-    private final BufferedImage canvas = new BufferedImage(
-            Config.TABULEIRO_LADO,
-            Config.TABULEIRO_LADO,
-            BufferedImage.TYPE_INT_RGB);
-    private final Graphics2D gCanvas = canvas.createGraphics();
+
     private Rectangle area;
 
     public TelaJogo(RenderizadorJogo renderizadorJogo) {
 
         this.renderizadorJogo = renderizadorJogo;
-        setPreferredSize(new Dimension(Config.TABULEIRO_LADO * 16, Config.TABULEIRO_LADO * 16));
+        int lado = Tabuleiro.getTabuleiroTotalPixeisLado();
+
+        setPreferredSize(new Dimension(lado * 16, lado * 16));
+        setBackground(Cores.VERDE_MAIS_ESCURO.get());
     }
 
     @Override
@@ -45,14 +43,11 @@ public class TelaJogo extends JComponent {
         //Objetos necessários
         Graphics2D g2d = (Graphics2D) g;
 
-        this.renderizadorJogo.renderizarJogo(this.gCanvas);
-        this.gCanvas.dispose();
-
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
         if (this.area != null) {
 
-            g2d.drawImage(this.canvas, area.x, area.y, area.width, area.height, this);
+            g2d.drawImage(renderizadorJogo.getCanvas(), area.x, area.y, area.width, area.height, this);
         }
     }
 }
