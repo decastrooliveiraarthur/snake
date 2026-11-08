@@ -54,7 +54,6 @@ public class Motor {
         controle.atualizarDirecaoVelha();
     }
 
-
     private void moverDirecao(KeyStroke keyStroke0, KeyStroke keyStroke1, String actionMapKey, Action action) {
 
         this.telaJogo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke0, actionMapKey);
