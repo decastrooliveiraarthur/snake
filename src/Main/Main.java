@@ -15,15 +15,15 @@ public class Main {
     public static void main(String[] args) {
 
         Maca maca = new Maca();
+        Controle controle = new Controle();
+        Cobra cobra = new Cobra(controle);
 
         SwingUtilities.invokeLater(() -> {
 
-            Controle controle = new Controle();
-            Cobra cobra = new Cobra(controle);
             RenderizadorJogo renderizadorJogo = new RenderizadorJogo(cobra, maca);
             TelaJogo telaJogo = new TelaJogo(renderizadorJogo);
-            new Motor(cobra, controle, renderizadorJogo, telaJogo);
             new Janela(telaJogo);
+            new Motor(cobra, controle, renderizadorJogo, telaJogo);
         });
     }
 }

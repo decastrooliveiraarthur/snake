@@ -6,8 +6,8 @@ import Main.Tabuleiro;
 
 public class Cobra {
 
+    private static final double VELOCIDADE = 2;
     private final Controle controle;
-
     private final long[] bitboard = new long[4];
     private final Construtor construtor = new Construtor();
     private boolean colidiu = false;
@@ -16,9 +16,13 @@ public class Cobra {
         this.controle = controle;
     }
 
-    public void mover() {
+    public static double getVELOCIDADE() {
+        return VELOCIDADE;
+    }
 
-        construtor.atualizarPosicao();
+    public void mover(double deltaTempo) {
+
+        construtor.atualizarPosicao(deltaTempo);
         construtor.construirCobra();
     }
 
@@ -41,6 +45,14 @@ public class Cobra {
         return linhaColuna;
     }
 
+    private double ciclarBorda(double deltaLinhaColuna) {
+        if (deltaLinhaColuna >= Tabuleiro.TABULEIRO_CASAS_LADO.get())
+            return deltaLinhaColuna - Tabuleiro.TABULEIRO_CASAS_LADO.get();
+        if (deltaLinhaColuna < 0)
+            return deltaLinhaColuna + Tabuleiro.TABULEIRO_CASAS_LADO.get();
+        return deltaLinhaColuna;
+    }
+
     public boolean isColidiu() {
         return colidiu;
     }
@@ -52,6 +64,8 @@ public class Cobra {
 
         private int linha = 8;
         private int coluna = 8;
+        private double deltaLinha = 8;
+        private double deltaColuna = 8;
 
         public Construtor() {
         }
@@ -64,9 +78,10 @@ public class Cobra {
             bitboard[bloco] |= mascara;
         }
 
-        private void atualizarPosicao() {
+        private void atualizarPosicao(double deltaTempo) {
 
             int direcaoCase = (((controle.getDirecaoNova()[0] ? 1 : 0) << 1) + (controle.getDirecaoNova()[1] ? 1 : 0));
+            double deltaVelocidade = VELOCIDADE * deltaTempo;
 
             switch (direcaoCase) {
 
@@ -75,7 +90,7 @@ public class Cobra {
                     if (colisaoComCobra(this.linha - 1, this.coluna)) {
                         colidiu = true;
                     } else
-                        this.linha--;
+                        this.deltaLinha -= deltaVelocidade;
                     break;
 
                 case 1:
@@ -83,7 +98,7 @@ public class Cobra {
                     if (colisaoComCobra(this.linha, this.coluna + 1)) {
                         colidiu = true;
                     } else
-                        this.coluna++;
+                        this.deltaColuna += deltaVelocidade;
                     break;
 
                 case 2:
@@ -91,7 +106,7 @@ public class Cobra {
                     if (colisaoComCobra(this.linha, this.coluna - 1)) {
                         colidiu = true;
                     } else
-                        this.coluna--;
+                        this.deltaColuna -= deltaVelocidade;
                     break;
 
                 case 3:
@@ -99,12 +114,14 @@ public class Cobra {
                     if (colisaoComCobra(this.linha + 1, this.coluna)) {
                         colidiu = true;
                     } else
-                        this.linha++;
+                        this.deltaLinha += deltaVelocidade;
                     break;
             }
 
-            this.linha = ciclarBorda(this.linha);
-            this.coluna = ciclarBorda(this.coluna);
+            this.deltaLinha = ciclarBorda(this.deltaLinha);
+            this.linha = (int) Math.round(this.deltaLinha);
+            this.deltaColuna = ciclarBorda(this.deltaColuna);
+            this.coluna = (int) Math.round(this.deltaColuna);
         }
 
         private boolean colisaoComCobra(int linha, int coluna) {

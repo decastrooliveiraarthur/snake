@@ -61,19 +61,18 @@ public class RenderizadorJogo {
 
         for (int i = 0; i < 64 * 4; i++) {
 
-            int linha = Conversor.indiceParaPosicao(i).linha();
-            int coluna = Conversor.indiceParaPosicao(i).coluna();
+            Conversor.Posicao posicao = Conversor.indiceParaPosicao(i);
 
             int lado = Tabuleiro.PIXEIS_CASAS_LADO.get();
-            int x = origemX + Tabuleiro.PIXEIS_BORDA.get() + (coluna * lado);
-            int y = origemY + Tabuleiro.PIXEIS_BORDA.get() + (linha * lado);
+            int x = origemX + Tabuleiro.PIXEIS_BORDA.get() + (posicao.coluna() * lado);
+            int y = origemY + Tabuleiro.PIXEIS_BORDA.get() + (posicao.linha() * lado);
 
             if (Conversor.ocupaCasa(i, this.maca.getBitboard()))
                 desenharMaca();
             else if (Conversor.ocupaCasa(i, this.cobra.getBitboard()))
                 desenharCobra();
             else
-                desenharTabuleiro(linha, coluna);
+                desenharTabuleiro(posicao.linha(), posicao.coluna());
 
             this.gCanvas.fillRect(x, y, lado, lado);
         }

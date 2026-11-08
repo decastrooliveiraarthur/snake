@@ -1,13 +1,10 @@
 # 🐍 Snake com Bitboards
 
-Jogo da cobrinha em **Java puro (Swing)**, com o estado do jogo representado por **bitboards**. Projeto pessoal para
-estudar Java e operações bit a bit, feito no ritmo que dá, de forma descontraída.
+Jogo da cobrinha em **Java puro (Swing)**, com o estado do jogo representado por **bitboards**. Projeto pessoal para estudar Java e operações bit a bit, feito no ritmo que dá, de forma descontraída.
 
 ## Por que bitboards?
 
-Em vez de uma matriz de objetos, cada camada do jogo (cobra, maçã) é guardada como uma sequência de bits: `1` para casa
-ocupada, `0` para vazia. Escolhi essa abordagem para praticar manipulação de bits e ver como um estado de jogo pode ser
-representado de forma compacta.
+Em vez de uma matriz de objetos, cada camada do jogo (cobra, maçã) é guardada como uma sequência de bits: `1` para casa ocupada, `0` para vazia. Escolhi essa abordagem para praticar manipulação de bits e ver como um estado de jogo pode ser representado de forma compacta.
 
 O tabuleiro tem 16 × 16 = 256 casas, então cada camada usa um `long[4]` (4 blocos de 64 bits):
 
@@ -20,8 +17,7 @@ bitboard[bloco] |= mascara;           // ocupar a casa
 (bitboard[bloco] & mascara) != 0      // consultar a casa
 ```
 
-A colisão da cobra com o próprio corpo é um simples `&` no bitboard, sem percorrer lista nenhuma. O renderizador
-percorre as 256 casas e consulta os bitboards para decidir a cor de cada uma.
+A colisão da cobra com o próprio corpo é um simples `&` no bitboard, sem percorrer lista nenhuma. O renderizador percorre as 256 casas e consulta os bitboards para decidir a cor de cada uma.
 
 ## O que já funciona
 

@@ -49,5 +49,7 @@ public class TelaJogo extends JPanel {
 
             g2d.drawImage(renderizadorJogo.getCanvas(), area.x, area.y, area.width, area.height, this);
         }
+
+        Toolkit.getDefaultToolkit().sync();
     }
 }
