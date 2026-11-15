@@ -12,7 +12,7 @@ public class Controle {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            direcaoAtual = setDirecaoNova(Direcao.CIMA.get());
+            setDirecaoNova(Direcao.CIMA.get());
         }
     };
     private final Action actionRight = new AbstractAction() {
@@ -20,7 +20,7 @@ public class Controle {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            direcaoAtual = setDirecaoNova(Direcao.DIREITA.get());
+            setDirecaoNova(Direcao.DIREITA.get());
         }
     };
     private final Action actionLeft = new AbstractAction() {
@@ -28,7 +28,7 @@ public class Controle {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            direcaoAtual = setDirecaoNova(Direcao.ESQUERDA.get());
+            setDirecaoNova(Direcao.ESQUERDA.get());
         }
     };
     private final Action actionDown = new AbstractAction() {
@@ -36,7 +36,7 @@ public class Controle {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            direcaoAtual = setDirecaoNova(Direcao.BAIXO.get());
+            setDirecaoNova(Direcao.BAIXO.get());
         }
     };
     private boolean[] direcaoAtual = Direcao.DIREITA.get();
@@ -48,15 +48,14 @@ public class Controle {
         return this.direcaoAtual.clone();
     }
 
-    public boolean[] setDirecaoNova(boolean[] direcaoNova) {
+    public void setDirecaoNova(boolean[] direcaoNova) {
 
         boolean[] inversoDirecaoVelha = new boolean[]{!direcaoAnterior[0], !direcaoAnterior[1]};
 
         if (!Arrays.equals(direcaoNova, inversoDirecaoVelha)) {
 
-            return new boolean[]{direcaoNova[0], direcaoNova[1]};
+            this.direcaoAtual = new boolean[]{direcaoNova[0], direcaoNova[1]};
         }
-        return this.direcaoAtual;
     }
 
     public void atualizarDirecaoVelha() {
