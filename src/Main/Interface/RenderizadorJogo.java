@@ -21,20 +21,20 @@ public class RenderizadorJogo {
     private final Cobra cobra;
     private final int origemX = Tabuleiro.ORIGEM_X.get();
     private final int origemY = Tabuleiro.ORIGEM_Y.get();
-    private final int lado = Tabuleiro.getTabuleiroTotalPixeisLado();
+    private final int ladoTabuleiroPixels = Tabuleiro.getTabuleiroTotalPixeisLado();
     private Graphics2D gCanvas;
 
     public RenderizadorJogo(Cobra cobra, Maca maca) {
 
         this.maca = maca;
         this.cobra = cobra;
-        this.canvas = new BufferedImage(lado, lado, BufferedImage.TYPE_INT_RGB);
+        this.canvas = new BufferedImage(ladoTabuleiroPixels, ladoTabuleiroPixels, BufferedImage.TYPE_INT_RGB);
     }
 
     private void desenharBorda() {
 
         this.gCanvas.setColor(Cores.VERDE_MAIS_CLARO.get());
-        this.gCanvas.fillRect(origemX, origemY, lado, lado);
+        this.gCanvas.fillRect(origemX, origemY, ladoTabuleiroPixels, ladoTabuleiroPixels);
     }
 
     private void desenharCobra() {

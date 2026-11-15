@@ -12,19 +12,19 @@ public class Motor {
     private final Cobra cobra;
     private final Controle controle;
     private final TelaJogo telaJogo;
-    private boolean primeiroMovimento = true;
+    private boolean posicaoInicializada = true;
     private long tempoAnterior = System.nanoTime();
 
-    public Motor(Cobra cobra, Controle controle, RenderizadorJogo renderizadorJogo, TelaJogo telajogo) {
+    public Motor(Cobra cobra, Controle controle, RenderizadorJogo renderizadorJogo, TelaJogo telaJogo) {
 
         this.cobra = cobra;
         this.controle = controle;
-        this.telaJogo = telajogo;
+        this.telaJogo = telaJogo;
 
         ActionListener atualizarFrame = e -> {
 
             long tempoAtual = System.nanoTime();
-            double deltaTempo = Math.min(1.0 / Cobra.getVELOCIDADE(), (tempoAtual - tempoAnterior) / 1_000_000_000.0);
+            double deltaTempo = Math.min(1.0 / Cobra.getVelocidade(), (tempoAtual - tempoAnterior) / 1_000_000_000.0);
             tempoAnterior = tempoAtual;
 
             if (cobra.isColidiu()) {
@@ -33,7 +33,7 @@ public class Motor {
             } else {
                 atualizarEstadoJogo(deltaTempo);
                 renderizadorJogo.desenharJogo();
-                telajogo.repaint();
+                telaJogo.repaint();
             }
         };
 
@@ -46,9 +46,9 @@ public class Motor {
 
     public void atualizarEstadoJogo(double deltaTempo) {
 
-        if (primeiroMovimento) {
+        if (posicaoInicializada) {
             cobra.setPosicaoInicial();
-            primeiroMovimento = false;
+            posicaoInicializada = false;
         } else
             cobra.mover(deltaTempo);
         controle.atualizarDirecaoVelha();

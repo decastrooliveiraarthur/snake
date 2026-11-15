@@ -16,7 +16,7 @@ public class Cobra {
         this.controle = controle;
     }
 
-    public static double getVELOCIDADE() {
+    public static double getVelocidade() {
         return VELOCIDADE;
     }
 
@@ -28,13 +28,13 @@ public class Cobra {
 
     public void setPosicaoInicial() {
 
-        int bloco = Conversor.posicaoParaBitboard(construtor.linha, construtor.coluna).bloco();
-        long mascara = Conversor.posicaoParaBitboard(construtor.linha, construtor.coluna).mascara();
+        int bloco = Conversor.posicaoParaBitboard(construtor.linhaAtual, construtor.colunaAtual).bloco();
+        long mascara = Conversor.posicaoParaBitboard(construtor.linhaAtual, construtor.colunaAtual).mascara();
         bitboard[bloco] |= mascara;
     }
 
     public long[] getBitboard() {
-        return bitboard;
+        return bitboard.clone();
     }
 
     private double ciclarBorda(double deltaLinhaColuna) {
@@ -55,64 +55,49 @@ public class Cobra {
     private class Construtor {
 
         private static final double CENTRO_DA_CASA = 0.5;
-        private int linha = 8;
-        private int coluna = 8;
-        private double deltaLinha = 8 + CENTRO_DA_CASA;
-        private double deltaColuna = 8 + CENTRO_DA_CASA;
+        private int linhaAtual = 8;
+        private int colunaAtual = 8;
+        private double linhaPrecisa = 8 + CENTRO_DA_CASA;
+        private double colunaPrecisa = 8 + CENTRO_DA_CASA;
 
         public Construtor() {
         }
 
         private void construirCobra() {
 
-            int bloco = Conversor.posicaoParaBitboard(this.linha, this.coluna).bloco();
-            long mascara = Conversor.posicaoParaBitboard(this.linha, this.coluna).mascara();
+            int bloco = Conversor.posicaoParaBitboard(this.linhaAtual, this.colunaAtual).bloco();
+            long mascara = Conversor.posicaoParaBitboard(this.linhaAtual, this.colunaAtual).mascara();
 
             bitboard[bloco] |= mascara;
         }
 
         private void atualizarPosicao(double deltaTempo) {
 
-            int direcaoCase = (((controle.getDirecaoNova()[0] ? 1 : 0) << 1) + (controle.getDirecaoNova()[1] ? 1 : 0));
+            int codigoDirecao = (((controle.getDirecaoAtual()[0] ? 1 : 0) << 1) + (controle.getDirecaoAtual()[1] ? 1 : 0));
             double deltaVelocidade = VELOCIDADE * deltaTempo;
 
-            switch (direcaoCase) {
+            switch (codigoDirecao) {
 
-                case 0:
-                    //cima
-                    this.deltaLinha -= deltaVelocidade;
-                    break;
-
-                case 1:
-                    //direita
-                    this.deltaColuna += deltaVelocidade;
-                    break;
-
-                case 2:
-                    //esquerda
-                    this.deltaColuna -= deltaVelocidade;
-                    break;
-
-                case 3:
-                    //baixo
-                    this.deltaLinha += deltaVelocidade;
-                    break;
+                case 0 -> this.linhaPrecisa -= deltaVelocidade; //cima
+                case 1 -> this.colunaPrecisa += deltaVelocidade; //direita
+                case 2 -> this.colunaPrecisa -= deltaVelocidade; //esquerda
+                case 3 -> this.linhaPrecisa += deltaVelocidade; //baixo
             }
 
-            this.deltaLinha = ciclarBorda(this.deltaLinha);
-            this.deltaColuna = ciclarBorda(this.deltaColuna);
+            this.linhaPrecisa = ciclarBorda(this.linhaPrecisa);
+            this.colunaPrecisa = ciclarBorda(this.colunaPrecisa);
 
-            int novaLinha = (int) Math.floor(this.deltaLinha);
-            int novaColuna = (int) Math.floor(this.deltaColuna);
+            int linhaDestino = (int) Math.floor(this.linhaPrecisa);
+            int colunaDestino = (int) Math.floor(this.colunaPrecisa);
 
-            boolean moveu = (novaLinha != this.linha) || (novaColuna != this.coluna);
+            boolean mudouDeCasa = (linhaDestino != this.linhaAtual) || (colunaDestino != this.colunaAtual);
 
-            if (moveu) {
-                if (colisaoComCobra(novaLinha, novaColuna)) {
+            if (mudouDeCasa) {
+                if (colisaoComCobra(linhaDestino, colunaDestino)) {
                     colidiu = true;
                 } else {
-                    this.linha = novaLinha;
-                    this.coluna = novaColuna;
+                    this.linhaAtual = linhaDestino;
+                    this.colunaAtual = colunaDestino;
                 }
             }
         }
