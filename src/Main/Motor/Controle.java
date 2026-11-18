@@ -12,7 +12,7 @@ public class Controle {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setDirecaoNova(Direcao.CIMA.get());
+            setDirecaoAtual(Direcao.CIMA.get());
         }
     };
     private final Action actionRight = new AbstractAction() {
@@ -20,7 +20,7 @@ public class Controle {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setDirecaoNova(Direcao.DIREITA.get());
+            setDirecaoAtual(Direcao.DIREITA.get());
         }
     };
     private final Action actionLeft = new AbstractAction() {
@@ -28,7 +28,7 @@ public class Controle {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setDirecaoNova(Direcao.ESQUERDA.get());
+            setDirecaoAtual(Direcao.ESQUERDA.get());
         }
     };
     private final Action actionDown = new AbstractAction() {
@@ -36,19 +36,30 @@ public class Controle {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setDirecaoNova(Direcao.BAIXO.get());
+            setDirecaoAtual(Direcao.BAIXO.get());
         }
     };
+    private boolean podeMudarDirecao = true;
+    private boolean[] direcaoPorCasa = Direcao.DIREITA.get();
     private boolean[] direcaoAtual = Direcao.DIREITA.get();
+    private int codigoDirecao = (((direcaoAtual[0] ? 1 : 0) << 1) + (direcaoAtual[1] ? 1 : 0));
 
     public Controle() {
+    }
+
+    public boolean[] getDirecaoPorCasa() {
+        return direcaoPorCasa;
+    }
+
+    public int getCodigoDirecao() {
+        return codigoDirecao;
     }
 
     public boolean[] getDirecaoAtual() {
         return this.direcaoAtual.clone();
     }
 
-    public void setDirecaoNova(boolean[] direcaoNova) {
+    public void setDirecaoAtual(boolean[] direcaoNova) {
 
         boolean[] inversoDirecaoVelha = new boolean[]{!direcaoAnterior[0], !direcaoAnterior[1]};
 
@@ -62,6 +73,10 @@ public class Controle {
 
         this.direcaoAnterior[0] = this.direcaoAtual[0];
         this.direcaoAnterior[1] = this.direcaoAtual[1];
+    }
+
+    public boolean mudouDeDirecao() {
+        return !Arrays.equals(this.direcaoAnterior, this.direcaoAtual);
     }
 
     public Action getActionUp() {
@@ -78,5 +93,19 @@ public class Controle {
 
     public Action getActionDown() {
         return actionDown;
+    }
+
+    public boolean isPodeMudarDirecao() {
+        return podeMudarDirecao;
+    }
+
+    public void setPodeMudarDirecao(boolean podeMudarDirecao) {
+        this.podeMudarDirecao = podeMudarDirecao;
+    }
+
+    public void mudarDirecao() {
+
+        codigoDirecao = ((direcaoAtual[0] ? 1 : 0) << 1) + (direcaoAtual[1] ? 1 : 0);
+        direcaoPorCasa = (Arrays.copyOf(direcaoAtual, direcaoAtual.length));
     }
 }

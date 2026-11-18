@@ -1,6 +1,6 @@
 package Main.Motor;
 
-enum Direcao {
+public enum Direcao {
 
     CIMA(new boolean[]{false, false}),
     DIREITA(new boolean[]{false, true}),
@@ -13,7 +13,7 @@ enum Direcao {
         this.direcao = direcao;
     }
 
-    boolean[] get() {
+    public boolean[] get() {
         return direcao.clone();
     }
 }

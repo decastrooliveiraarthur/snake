@@ -51,7 +51,6 @@ public class Motor {
             posicaoInicializada = false;
         } else
             cobra.mover(deltaTempo);
-        controle.atualizarDirecaoVelha();
     }
 
     private void moverDirecao(KeyStroke keyStroke0, KeyStroke keyStroke1, String actionMapKey, Action action) {
